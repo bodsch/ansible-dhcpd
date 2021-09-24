@@ -1,0 +1,68 @@
+---
+
+dhcpd_lease_time: '24'
+
+dhcpd_defaults_server_global:
+  authoritative: false
+  # Default lease time for all IP address leases (18 hours)
+  default_lease_time: '{{ (((dhcpd_lease_time | int / 2) + 6) * 60 * 60) | round | int }}'
+  # Maximum lease time for all IP addresses (24 hours)
+  max_lease_time: '{{ (dhcpd_lease_time | int * 60 * 60) | round | int }}'
+  # Log facility to use
+  log_facility: 'local7'
+  options:
+    # https://kb.isc.org/docs/isc-dhcp-41-manual-pages-dhcp-options
+    # dhcp_requested_address: ""
+    all_subnets_local: ""
+    arp_cache_timeout: 0
+    default_ip_ttl: 0
+    default_tcp_ttl: 0
+    default_url: ""
+    dhcp_client_identifier: ""
+    dhcp_lease_time: 0
+    dhcp_max_message_size: 0
+    dhcp_message: ""
+    dhcp_message_type: 0
+    dhcp_option_overload: 0
+    dhcp_parameter_request_list: []
+    dhcp_rebinding_time: 0
+    dhcp_renewal_time: 0
+    dhcp_server_identifier: ""
+    domain_name: "{{ ansible_domain }}"
+    domain_name_servers: []
+    domain_routers: ""
+    domain_search: []
+    host_name: ""
+    interface_mtu: 0
+    log_servers: []
+    ntp-servers: []
+    routers: []
+    static-routes: []
+    subnet-mask: ""
+    time-servers: []
+    vendor-class-identifier: ""
+
+dhcpd_defaults_ddns:
+  # https://kb.isc.org/docs/aa-01091
+  #  - ad-hoc
+  #  - interim
+  #  - standard
+  #  - none
+  update_style: standard
+  # update-optimization off;
+  #
+
+dhcpd_defaults_subnets:
+  subnet: ""
+  routers: ""
+  range: ""
+  pools: {}
+  options: {}
+
+dhcpd_defaults_groups: {}
+
+dhcpd_defaults_hosts: {}
+
+dhcpd_includes: []
+
+...

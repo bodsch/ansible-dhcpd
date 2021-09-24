@@ -1,0 +1,8 @@
+---
+
+- name: install
+  package:
+    name: "{{ dhcpd_packages }}"
+    state: present
+
+...

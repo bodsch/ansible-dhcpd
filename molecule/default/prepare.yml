@@ -1,0 +1,29 @@
+---
+- name: prepare container
+  hosts: all
+  gather_facts: true
+
+  pre_tasks:
+
+    - debug:
+        msg:
+          - "os family            : {{ ansible_os_family }}"
+          - "distribution         : {{ ansible_distribution }}"
+          - "distribution version : {{ ansible_distribution_major_version }}"
+          - "ansible version      : {{ ansible_version.full }}"
+          - "python version       : {{ ansible_python.version.major }}"
+
+#   tasks:
+#     - name: clean caches for debian based
+#       command: apt clean
+#       args:
+#         warn: false
+#       when: ansible_os_family | lower == 'debian'
+#     # - name: update instance
+#     #   shell: |
+#     #     apt update
+#     #     apt -y dist-upgrade
+#     #   args:
+#     #     warn: false
+#     #   when: ansible_os_family | lower == 'debian'
+#

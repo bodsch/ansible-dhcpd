@@ -1,0 +1,11 @@
+---
+
+dhcpd_packages:
+  - net-misc/dhcp
+
+dhcpd_service: "dhcpd"
+
+dhcpd_templates:
+  - 'etc/dhcp/dhcpd.conf'
+
+...

@@ -1,0 +1,31 @@
+{% import 'macros.j2' as tpl with context %}
+{% if dhcpd_groups is defined and dhcpd_groups %}
+{% for group, group_values in dhcpd_groups.items() %}
+{% if group_values.comment is defined and group_values.comment %}
+# {{ group_values.comment }}
+{% endif %}
+group {
+{# options #}
+{% if group_values.options is defined and group_values.options %}
+{{ tpl.print_options(group_values.options) | indent(2, first=True) }}
+{% endif %}
+
+{%- set subnets = {} %}
+{%- set hosts = {} %}
+{%- if group_values.subnets is defined and group_values.subnets | count > 0 %}
+{% set subnets = group_values.subnets %}
+{%- endif %}
+{%- if group_values.hosts is defined and group_values.hosts | count > 0 %}
+{% set hosts = group_values.hosts %}
+{%- endif %}
+{# subnets - maybe later #}
+{% if subnets | count > 0 %}
+  {{ tpl.print_subnet(subnets, hosts) | indent(2, first=False) }}
+{% endif %}
+{% if hosts | count > 0 %}
+{{ tpl.print_hosts(hosts) | indent(2, first=True) }}
+{% endif %}
+}
+
+{% endfor %}
+{% endif %}

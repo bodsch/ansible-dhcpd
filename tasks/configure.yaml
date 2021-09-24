@@ -1,0 +1,35 @@
+---
+
+- block:
+    - name: configure DHCP server
+      template:
+        src: "etc/dhcp/dhcpd.conf.j2"
+        dest: "/etc/dhcpd.conf"
+        owner: root
+        group: root
+        mode: 0644
+        backup: true
+        validate: dhcpd -t -cf %s
+      notify:
+        - restart dhcp server
+  when:
+    - ansible_distribution | lower == "archlinux"
+    - ansible_service_mgr | lower == "systemd"
+
+- name: configure DHCP server
+  template:
+    src: "{{ item }}.j2"
+    dest: "/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+    backup: true
+    validate: dhcpd -t -cf %s
+  loop:
+    "{{ dhcpd_templates }}"
+  notify:
+    - restart dhcp server
+  # register: dhcpd_register_config
+  when:
+    - not ansible_distribution | lower == "archlinux"
+...

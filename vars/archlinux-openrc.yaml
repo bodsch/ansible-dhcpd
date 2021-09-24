@@ -1,0 +1,13 @@
+---
+
+dhcpd_packages:
+  - dhcp
+  - dhcp-openrc
+
+dhcpd_service: "dhcp-server"
+
+dhcpd_templates:
+  - 'etc/conf.d/dhcp-server'
+  - 'etc/dhcp/dhcpd.conf'
+
+...

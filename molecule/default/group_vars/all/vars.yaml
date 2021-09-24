@@ -1,0 +1,100 @@
+---
+
+dhcpd_server_global:
+  authoritative: false
+  default_lease_time: 600
+  max_lease_time: 7200
+  options:
+    domain_name: "molecule.test"
+    domain_search: "molecule.test"
+    domain_name_servers:
+      - 192.168.0.5
+      - 141.1.1.1
+
+# dhcpd_authoritative: true
+# dhcpd_ddns_update_style: interim
+# dhcpd_allow_client_updates: true
+
+dhcpd_interfaces:
+  - eth0
+
+dhcpd_subnets:
+  "LOCAL net":
+    comment: 'ipv4 - generated automatically by Ansible'
+    subnet: '{{ ansible_default_ipv4.network + "/" + ansible_default_ipv4.netmask }}'
+    routers:
+      - 192.168.1.5
+
+    # pools:
+    #   - range: '192.168.1.220 192.168.1.250'
+    #     comment: ".222 to .250"
+    #     options:
+    #       domain_name_servers:
+    #         - bogus.example.com
+    #     max_lease_time: 300
+    #     allow: unknown-clients
+    #   - range: '192.168.1.251 192.168.1.254'
+    #     comment: ".251 to .254"
+    #     options:
+    #       domain_name_servers:
+    #         - ns1.example.com
+    #         - ns2.example.com
+    #     max_lease_time: 28800
+    #     deny: unknown-clients
+
+    options:
+      default-lease-time: 2400
+      max-lease-time: 7200
+
+# dhcpd_keys:
+#   - key: DYNAMIC_DNS_KEY
+#     algorithm: hmac-sha256
+#     secret: '"cQPr8kux/jsgv+gEGWt8Sg=="'
+#
+# dhcpd_zones:
+#   - zone: 'matrix.lan.'
+#     primary: 127.0.0.1
+#     key: DYNAMIC_DNS_KEY
+#   - zone: '0.168.192.in-addr.arpa.'
+#     primary: 127.0.0.1
+#     key: DYNAMIC_DNS_KEY
+
+dhcpd_groups:
+  infrastructure:
+    comment: "infrastructure"
+    options:
+      domain_name: "molecule.test"
+      domain_search: "molecule.test"
+      domain_name_servers:
+    hosts:
+      nas:
+        comment: "simply the NAS"
+        mac: 00:08:9b:f9:dc:f5
+        address: 192.168.0.6
+        # host_name: "nas"
+        # default_lease_time: 600
+        # max_lease_time: 7200
+
+        options:
+          host_name: "nas"
+          max_lease_time: 1200
+
+  bodsch:
+    options: {}
+    subnets: {}
+    hosts:
+      dunkelzahn:
+        address: 192.168.0.20
+        mac: 80:ee:73:c7:6c:56
+      helldriver:
+        address: 192.168.0.22
+        mac: c0:ee:fb:b5:f5:21
+
+dhcpd_hosts:
+  brennstuhl:
+    comment: socket with LAN
+    address: 192.168.1.4
+    mac: 20:4C:6D:00:2A:7E
+
+
+...

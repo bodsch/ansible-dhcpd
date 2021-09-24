@@ -1,0 +1,51 @@
+{% import 'macros.j2' as tpl with context %}
+
+{% if dhcpd_subnets is defined and dhcpd_subnets %}
+{% for subnet, values in dhcpd_subnets.items() %}
+{% if values.comment is defined and values.comment %}
+# {{ values.comment }}
+{% endif %}
+{% if (values.netmask is defined and (values.subnet + '/' + values.netmask) | ipaddr('cidr') | ipaddr('network')) %}
+subnet {{ (values.subnet + '/' + values.netmask) | ipaddr('cidr') | ipaddr('network') }} netmask {{ values.netmask }} {
+{% elif values.subnet | ipaddr('cidr') | ipaddr('network') %}
+subnet {{ values.subnet | ipaddr('cidr') | ipaddr('network') }} netmask {{ values.subnet | ipaddr('netmask') }} {
+{% else %}
+subnet {{ values.subnet | ipaddr('cidr') | ipaddr('address') }} netmask 255.255.255.255 {
+{% endif %}
+{% if values.routers is defined and values.routers %}
+  option routers {{ values.routers | join(', ') }};
+{% endif %}
+{# options #}
+{% if values.options is defined and values.options %}
+{{ tpl.print_options(values.options) | indent(2, true) }}
+{% endif -%}
+{# pools #}
+{%- if values.pools is defined and values.pools %}
+{% for pool in values.pools %}
+{% if pool.comment is defined and pool.comment %}
+  # {{ pool.comment }}
+{% endif %}
+  pool {
+    range {{ pool.range }};
+{% if pool.options is defined and pool.options %}
+    {{ tpl.print_options(pool.options) }}
+{% endif -%}
+{%- if pool.max_lease_time is defined %}
+    max-lease-time {{ pool.max_lease_time }};
+{% endif %}
+{%- if pool.allow is defined %}
+    allow {{ pool.allow }};
+{% endif %}
+{%- if pool.deny is defined %}
+    deny {{ pool.deny }};
+{% endif %}
+  }
+{% endfor %}
+{% endif %}
+{% if values.hosts is defined and values.hosts %}
+{# print_hosts(values.hosts) | indent(2, true) #}
+{% endif %}
+}
+
+{% endfor %}
+{% endif %}

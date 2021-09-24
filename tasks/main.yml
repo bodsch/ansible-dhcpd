@@ -1,0 +1,14 @@
+---
+
+- include_tasks: prepare.yaml
+  tags:
+    - dhcpd_prepare
+    - dhcpd_configure
+
+- include_tasks: install.yaml
+
+- include_tasks: configure.yaml
+
+- include_tasks: service.yaml
+
+...

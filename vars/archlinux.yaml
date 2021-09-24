@@ -1,0 +1,10 @@
+---
+
+dhcpd_packages:
+  - dhcp
+
+dhcpd_service: "dhcpd4"
+
+dhcpd_templates: []
+
+...

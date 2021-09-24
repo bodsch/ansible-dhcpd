@@ -1,0 +1,4 @@
+{% import 'macros.j2' as tpl with context %}
+{% if dhcpd_hosts is defined and dhcpd_hosts %}
+{{ tpl.print_hosts(dhcpd_hosts) }}
+{% endif %}

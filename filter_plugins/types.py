@@ -3,6 +3,8 @@
 from __future__ import (absolute_import, print_function)
 __metaclass__ = type
 
+import ipaddress
+
 from ansible.utils.display import Display
 
 # https://docs.ansible.com/ansible/latest/dev_guide/developing_plugins.html
@@ -24,14 +26,14 @@ class FilterModule(object):
 
     def var_type(self, var):
         '''
-        Get the type of a variable
+          Get the type of a variable
         '''
-        # display.v("var   : {} ({})".format(var, type(var)))
-        # display.v("result: {}".format(type(var).__name__))
-
         return type(var).__name__
 
     def has_values(self, var):
+        """
+
+        """
         result = False
         result_value = var
 
@@ -40,11 +42,17 @@ class FilterModule(object):
         if isinstance(var, int) and int(var) > 0:
             result = True
         if (isinstance(var, str) or type(var).__name__ == "AnsibleUnsafeText"):
+          try:
+            ip = ipaddress.ip_address(var)
+            result_value = '{}'.format(str(var))
+          except:
             result_value = '"{}"'.format(str(var))
-            if len(var) > 0:
-                result = True
+          if len(var) > 0:
+              result = True
         if isinstance(var, list) and len(var) > 0:
             result_value = "{}".format((', ').join(var))
             result = True
+
+        # display.v(" = {} {}".format(result, result_value))
 
         return result, result_value

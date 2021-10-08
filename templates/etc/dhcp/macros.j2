@@ -13,7 +13,8 @@
           "domain-search",
           "domain-name",
           "broadcast-address",
-          "subnet-mask"
+          "subnet-mask",
+          "routers"
         ] %}
 {% for key, value in options.items() %}
 {%- set key = key.replace('_','-') %}
@@ -101,7 +102,7 @@ host {{ name }} {
   fixed-address {{ values.address }};
 {% endif %}
 {% if values.options is defined and values.options | count > 0 %}
-  {{ print_options(values.options) }}
+  {{ print_options(values.options) | indent(2, first=False) }}
 {% endif -%}
 }
 {% endfor %}

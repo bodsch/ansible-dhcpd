@@ -7,7 +7,9 @@ dhcpd_packages:
 dhcpd_service: "dhcp-server"
 
 dhcpd_templates:
-  - 'etc/conf.d/dhcp-server'
-  - 'etc/dhcp/dhcpd.conf'
+  # - 'etc/conf.d/dhcp-server'
+  - 'etc/dhcp/dhcp-server.conf'
+
+# dhcpd_default:
 
 ...

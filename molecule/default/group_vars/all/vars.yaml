@@ -16,7 +16,9 @@ dhcpd_server_global:
 # dhcpd_allow_client_updates: true
 
 dhcpd_interfaces:
-  - eth0
+  ipv4:
+    - eth0
+  ipv6: []
 
 dhcpd_subnets:
   "LOCAL net":

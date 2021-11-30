@@ -9,6 +9,6 @@ exclude =
 
 
 # E203: https://github.com/python/black/issues/315
-# ignore = D,E741,W503,W504,H,E501,E203
+ignore = F841 # D,E741,W503,W504,H,E501,E203
 
 max-line-length = 195

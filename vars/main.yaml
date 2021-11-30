@@ -65,4 +65,6 @@ dhcpd_defaults_hosts: {}
 
 dhcpd_includes: []
 
+dhcpd_dependencies: []
+
 ...

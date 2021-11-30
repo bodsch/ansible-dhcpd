@@ -17,16 +17,10 @@ OPTIONS="{{ dhcpd_server_options | default('-4') }}"
 # On what interfaces should the DHCP server (dhcpd) serve DHCP requests?
 #	Separate multiple interfaces with spaces, e.g. "eth0 eth1".
 {% if dhcpd_interfaces is defined and dhcpd_interfaces %}
-INTERFACESv4=""
-INTERFACESv6=""
-# INTERFACES="{{ dhcpd_interfaces | join(' ') }}"
-{% else %}
-{% set dhcpd_tpl_interfaces = [] %}
-{% for interface in ansible_interfaces %}
-{% if interface != 'lo' and ((hostvars[inventory_hostname]['ansible_'+interface].ipv4 is defined and hostvars[inventory_hostname]['ansible_'+interface].ipv4) or (hostvars[inventory_hostname]['ansible_'+interface].ipv6 is defined and hostvars[inventory_hostname]['ansible_'+interface].ipv6)) %}
-{% if dhcpd_tpl_interfaces.append(interface) %}{% endif %}
+{% if dhcpd_interfaces.ipv4 is defined and dhcpd_interfaces.ipv4 | length > 0 %}
+INTERFACESv4="{{ dhcpd_interfaces.ipv4 | join(' ') }}"
 {% endif %}
-{% endfor %}
-# ...
-# INTERFACES="{{ dhcpd_tpl_interfaces | join(' ') }}"
+{% if dhcpd_interfaces.ipv6 is defined and dhcpd_interfaces.ipv6 | length > 0 %}
+INTERFACESv6="{{ dhcpd_interfaces.ipv6 | join(' ') }}"
+{% endif %}
 {% endif %}

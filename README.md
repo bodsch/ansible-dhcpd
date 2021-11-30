@@ -21,6 +21,7 @@ Installs and configure a dhcp server on varoius linux systems.
 * CentOS 7 / 8
 * Oracle Linux 7 / 8
 * Arch Linux
+* Artix Linux
 
 
 ## usage
@@ -47,7 +48,7 @@ dhcpd_groups: {}
 
 dhcpd_hosts: {}
 
-dhcpd_interfaces: []
+dhcpd_interfaces: {}
 
 dhcpd_auto_options: false
 ```
@@ -63,8 +64,13 @@ dhcpd_server_global:
     domain_name: "molecule.test"
     domain_search: "molecule.test"
     domain_name_servers:
-      - 192.168.0.5
+      - 192.168.1.5
       - 141.1.1.1
+
+dhcpd_interfaces:
+  ipv4:
+    - eth0
+  ipv6: []
 ```
 
 ### `dhcpd_subnets`
@@ -75,7 +81,7 @@ dhcpd_subnets:
     comment: 'ipv4 - generated automatically by Ansible'
     subnet: '{{ ansible_default_ipv4.network + "/" + ansible_default_ipv4.netmask }}'
     routers:
-      - 192.168.0.1
+      - 192.168.1.1
     options:
       default-lease-time: 2400
       max-lease-time: 7200
@@ -96,7 +102,7 @@ dhcpd_groups:
       nas:
         comment: "simply the NAS"
         mac: 00:08:9b:f9:yy:xx
-        address: 192.168.0.6
+        address: 192.168.1.6
         options:
           host_name: "nas"
           max_lease_time: 1200

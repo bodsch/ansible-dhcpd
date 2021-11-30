@@ -3,7 +3,7 @@
 from __future__ import (absolute_import, print_function)
 __metaclass__ = type
 
-# import ipaddress
+import ipaddress
 
 from ansible.utils.display import Display
 
@@ -21,7 +21,7 @@ class FilterModule(object):
     def filters(self):
         return {
             'type': self.var_type,
-            'has_valid_values': self.has_values
+            'has_valid_values': self.has_values,
         }
 
     def var_type(self, var):
@@ -37,18 +37,20 @@ class FilterModule(object):
         result = False
         result_value = var
 
-        # display.v("var   : {} ({})".format(var, type(var)))
+        # display.v("var   : '{}' ({} / {})".format(var, type(var), self.var_type(var)))
 
         if isinstance(var, int) and int(var) > 0:
             result = True
-        if (isinstance(var, str) or type(var).__name__ == "AnsibleUnsafeText"):
+        if (isinstance(var, str) or type(var).__name__ == "AnsibleUnsafeText" or type(var).__name__ == "AnsibleUnicode"):
             try:
-                # ip = ipaddress.ip_address(var)
+                ip = ipaddress.ip_address(var)
                 result_value = '{}'.format(str(var))
             except Exception:
                 result_value = '"{}"'.format(str(var))
+
             if len(var) > 0:
                 result = True
+
         if isinstance(var, list) and len(var) > 0:
             result_value = "{}".format((', ').join(var))
             result = True

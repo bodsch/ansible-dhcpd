@@ -18,6 +18,33 @@
         - default.yaml
       skip: true
 
+- block:
+    - name: make sure python3-apt is installed (only debian based)
+      package:
+        name:
+          - python3-apt
+        state: present
+
+    - name: clean apt cache
+      command: apt-get clean
+      args:
+        warn: false
+  when:
+    - ansible_os_family | lower == 'debian'
+
+- name: get latest system information
+  setup:
+
+- name: update package cache
+  package:
+    update_cache: true
+
+
+- name: install requirements
+  package:
+    name: "{{ dhcpd_dependencies }}"
+    state: present
+
 - name: merge dhcpd server configuration between defaults and custom
   set_fact:
     dhcpd_server_global: "{{ dhcpd_defaults_server_global |

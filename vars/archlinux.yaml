@@ -1,5 +1,8 @@
 ---
 
+dhcpd_dependencies:
+  - iproute
+
 dhcpd_packages:
   - dhcp
 

@@ -1,5 +1,8 @@
 ---
 
+dhcpd_dependencies:
+  - net-misc/iproute2
+
 dhcpd_packages:
   - net-misc/dhcp
 

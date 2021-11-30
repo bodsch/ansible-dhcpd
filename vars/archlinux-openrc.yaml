@@ -1,5 +1,8 @@
 ---
 
+dhcpd_dependencies:
+  - iproute
+
 dhcpd_packages:
   - dhcp
   - dhcp-openrc
@@ -7,9 +10,7 @@ dhcpd_packages:
 dhcpd_service: "dhcp-server"
 
 dhcpd_templates:
-  # - 'etc/conf.d/dhcp-server'
   - 'etc/dhcp/dhcp-server.conf'
-
-# dhcpd_default:
+  # - '/etc/dhcpd.conf'
 
 ...

@@ -1,0 +1,15 @@
+---
+
+dhcpd_dependencies:
+  - iproute
+
+dhcpd_packages:
+  - dhcp-common
+  - dhcp
+
+dhcpd_service: "dhcpd"
+
+dhcpd_templates:
+  - 'etc/dhcp/dhcpd.conf'
+
+...

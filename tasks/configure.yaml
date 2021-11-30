@@ -43,7 +43,7 @@
   notify:
     - restart dhcp server
   when:
-    - ansible_distribution | lower == "debian"
+    - ansible_os_family | lower == "debian"
 
 - name: configure DHCP server
   template:

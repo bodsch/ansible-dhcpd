@@ -9,7 +9,6 @@ dhcpd_packages:
 dhcpd_service: "isc-dhcp-server"
 
 dhcpd_templates:
-  - 'etc/default/isc-dhcp-server'
   - 'etc/dhcp/dhcpd.conf'
 
 ...

@@ -32,6 +32,19 @@
   when:
     - ansible_distribution | lower == "archlinux"
 
+- name: create DHCP server default
+  template:
+    src: etc/default/isc-dhcp-server.j2
+    dest: /etc/default/isc-dhcp-server
+    owner: root
+    group: root
+    mode: 0644
+    backup: true
+  notify:
+    - restart dhcp server
+  when:
+    - ansible_distribution | lower == "debian"
+
 - name: configure DHCP server
   template:
     src: "{{ item }}.j2"

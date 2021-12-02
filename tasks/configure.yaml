@@ -24,7 +24,6 @@
         group: root
         mode: 0644
         backup: true
-        validate: dhcpd -t -cf %s
       notify:
         - restart dhcp server
       when:
@@ -46,6 +45,7 @@
     - ansible_os_family | lower == "debian"
 
 - name: configure DHCP server
+  become: true
   template:
     src: "{{ item }}.j2"
     dest: "/{{ item }}"
@@ -53,10 +53,11 @@
     group: root
     mode: 0644
     backup: true
-    validate: dhcpd -t -cf %s
+    # validate: dhcpd -t -cf %s
   loop:
     "{{ dhcpd_templates }}"
   notify:
+    - validate config
     - restart dhcp server
 
 ...

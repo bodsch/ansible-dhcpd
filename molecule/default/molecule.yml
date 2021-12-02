@@ -30,11 +30,8 @@ provisioner:
     defaults:
       deprecation_warnings: True
       stdout_callback: yaml
-      # callback_whitelist: profile_tasks
-      # gather_subset: '!hardware'
     diff:
       always: True
-
 
 scenario:
   test_sequence:

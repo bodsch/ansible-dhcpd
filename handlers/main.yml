@@ -1,5 +1,9 @@
 ---
 
+- name: validate config
+  command: |
+    dhcpd -t -cf /etc/dhcp/dhcpd.conf
+
 - name: restart dhcp server
   service:
     name: "{{ dhcpd_service }}"

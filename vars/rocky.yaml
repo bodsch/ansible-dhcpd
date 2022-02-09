@@ -4,8 +4,7 @@ dhcpd_dependencies:
   - iproute
 
 dhcpd_packages:
-  - dhcp-common
-  - dhcp
+  - dhcp-server
 
 dhcpd_service: "dhcpd"
 

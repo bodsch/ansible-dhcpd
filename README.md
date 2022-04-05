@@ -19,13 +19,11 @@ Installs and configure a dhcp server on varoius linux systems.
 * ArchLinux
 * Debian based
     - Debian 10 / 11
-    - Ubuntu 18.04 / 20.04
+    - Ubuntu 20.04
 * RedHat based
-    - CentOS 8 (**not longer supported**)
     - Alma Linux 8
     - Rocky Linux 8
     - OracleLinux 8
-
 
 ## usage
 

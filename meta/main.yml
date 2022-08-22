@@ -6,7 +6,7 @@ galaxy_info:
 
   author: Bodo Schulz
   description: ansible role for isc-dhcp server
-  company: ''
+
   license: "Apache"
   min_ansible_version: 3.1
 
@@ -22,9 +22,6 @@ galaxy_info:
         - buster
         # 11
         - bullseye
-    - name: EL
-      versions:
-        - 8
 
   galaxy_tags:
     - server

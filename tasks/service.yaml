@@ -1,7 +1,7 @@
 ---
 
 - name: ensure DHCP server is started and enabled on boot
-  service:
+  ansible.builtin.service:
     name: '{{ dhcpd_service }}'
     state: started
     enabled: true

@@ -1,9 +1,11 @@
 ---
 
 - name: archlinux based
+  when:
+    - ansible_distribution | lower == "archlinux"
   block:
     - name: create default configuration for DHCP server (systemd)
-      template:
+      ansible.builtin.template:
         src: etc/dhcp/dhcp-server.conf.j2
         dest: /etc/dhcpd.conf
         owner: root
@@ -17,7 +19,7 @@
         - ansible_service_mgr | lower == "systemd"
 
     - name: create default configuration for DHCP server (openrc)
-      template:
+      ansible.builtin.template:
         src: etc/conf.d/dhcp-server.j2
         dest: /etc/conf.d/dhcp-server
         owner: root
@@ -28,11 +30,9 @@
         - restart dhcp server
       when:
         - ansible_service_mgr | lower == "openrc"
-  when:
-    - ansible_distribution | lower == "archlinux"
 
 - name: create DHCP server default
-  template:
+  ansible.builtin.template:
     src: etc/default/isc-dhcp-server.j2
     dest: /etc/default/isc-dhcp-server
     owner: root
@@ -46,7 +46,7 @@
 
 - name: configure DHCP server
   become: true
-  template:
+  ansible.builtin.template:
     src: "{{ item }}.j2"
     dest: "/{{ item }}"
     owner: root

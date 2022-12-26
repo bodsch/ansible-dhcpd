@@ -4,14 +4,15 @@
 
 Installs and configure a dhcp server on varoius linux systems.
 
-
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bodsch/ansible-dhcpd/CI)][ci]
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/bodsch/ansible-dhcpd/main.yml?branch=main)][ci]
 [![GitHub issues](https://img.shields.io/github/issues/bodsch/ansible-dhcpd)][issues]
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/bodsch/ansible-dhcpd)][releases]
+[![Ansible Quality Score](https://img.shields.io/ansible/quality/50067?label=role%20quality)][quality]
 
 [ci]: https://github.com/bodsch/ansible-dhcpd/actions
 [issues]: https://github.com/bodsch/ansible-dhcpd/issues?q=is%3Aopen+is%3Aissue
 [releases]: https://github.com/bodsch/ansible-dhcpd/releases
+[quality]: https://galaxy.ansible.com/bodsch/dhcpd
 
 
 ## tested operating systems
@@ -120,3 +121,15 @@ dhcpd_hosts:
     address: 192.168.1.4
     mac: 20:4C:6D:00:yy:xx
 ```
+
+---
+
+## Author and License
+
+- Bodo Schulz
+
+## License
+
+[Apache](LICENSE)
+
+`FREE SOFTWARE, HELL YEAH!`

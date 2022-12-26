@@ -1,7 +1,7 @@
 ---
 
 - name: install
-  package:
+  ansible.builtin.package:
     name: "{{ dhcpd_packages }}"
     state: present
 

@@ -32,7 +32,6 @@ class FilterModule(object):
 
     def has_values(self, var):
         """
-
         """
         result = False
         result_value = var
@@ -44,15 +43,17 @@ class FilterModule(object):
         if (isinstance(var, str) or type(var).__name__ == "AnsibleUnsafeText" or type(var).__name__ == "AnsibleUnicode"):
             try:
                 ip = ipaddress.ip_address(var)
-                result_value = '{}'.format(str(var))
+                display.v(f"ip   : '{ip}'")
+                result_value = f"{str(var)}"
             except Exception:
-                result_value = '"{}"'.format(str(var))
+                result_value = f'"{str(var)}"'
 
             if len(var) > 0:
                 result = True
 
         if isinstance(var, list) and len(var) > 0:
-            result_value = "{}".format((', ').join(var))
+            result_joined = ', '.join(var)
+            result_value = f"{result_joined}"
             result = True
 
         # display.v(" = {} {}".format(result, result_value))

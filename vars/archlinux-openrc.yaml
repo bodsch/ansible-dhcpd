@@ -7,10 +7,4 @@ dhcpd_packages:
   - dhcp
   - dhcp-openrc
 
-dhcpd_service: "dhcp-server"
-
-dhcpd_templates:
-  - 'etc/dhcp/dhcp-server.conf'
-  # - '/etc/dhcpd.conf'
-
 ...

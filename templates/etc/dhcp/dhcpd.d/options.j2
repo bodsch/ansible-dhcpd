@@ -1,8 +1,11 @@
 {% import 'macros.j2' as tpl with context %}
 
-{% if dhcpd_auto_options is defined and dhcpd_auto_options %}
+{% if dhcpd_auto_options is defined and
+      dhcpd_auto_options %}
 {% include 'auto_options.j2' %}
 {% endif %}
-{% if dhcpd_server_global.options is defined and dhcpd_server_global.options | count > 0 %}
-{{ tpl.print_options(dhcpd_server_global.options) | indent(0, first=False) }}
+
+{% if dhcpd_server_global.options is defined and
+      dhcpd_server_global.options | count > 0 %}
+  {{ tpl.print_options(dhcpd_server_global.options) | indent(2, first=False) }}
 {% endif %}

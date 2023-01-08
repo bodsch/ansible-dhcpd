@@ -17,15 +17,15 @@
           "routers"
         ] %}
 {% for key, value in options.items() %}
-{%- set key = key.replace('_','-') %}
-{%- set valid, v = value | has_valid_values %}
-{% if key in with_option %}
-{%- set key = "option " + key %}
-{% endif %}
-{% if valid %}
+  {%- set valid, v = value | has_valid_values %}
+  {% if valid %}
+    {%- set key = key.replace('_','-') %}
+    {% if key in with_option %}
+      {%- set key = "option " + key %}
+    {% endif %}
 {{ key }} {{ v }};
-{% endif %}
-{% endfor -%}
+  {%- endif %}
+{%- endfor -%}
 {% endmacro %}
 
 {#

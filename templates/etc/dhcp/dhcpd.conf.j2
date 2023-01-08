@@ -1,8 +1,6 @@
-{% import 'macros.j2' as tpl with context %}
-{#
-  vim: ft=dhcpd
-#}
+#jinja2: trim_blocks: True, lstrip_blocks: True
 # {{ ansible_managed }}
+{% import 'macros.j2' as tpl with context %}
 
 {% if dhcpd_server_global.authoritative is defined and
       dhcpd_server_global.authoritative %}
@@ -11,26 +9,29 @@ authoritative;
 not authoritative;
 {% endif %}
 
-{%- if dhcpd_server_global.default_lease_time is defined and
-      dhcpd_server_global.default_lease_time %}
-default-lease-time {{ dhcpd_server_global.default_lease_time }};
+{% if dhcpd_server_global.lease_times.default is defined and
+      dhcpd_server_global.lease_times.default %}
+default-lease-time {{ dhcpd_server_global.lease_times.default }};
 {% endif %}
 
-{%- if dhcpd_server_global.max_lease_time is defined and
-      dhcpd_server_global.max_lease_time %}
-max-lease-time {{ dhcpd_server_global.max_lease_time }};
+{% if dhcpd_server_global.lease_times.max is defined and
+      dhcpd_server_global.lease_times.max %}
+max-lease-time {{ dhcpd_server_global.lease_times.max }};
 {% endif %}
 
-{%- if dhcpd_server_global.log_facility is defined and
-      dhcpd_server_global.log_facility %}
-log-facility {{ dhcpd_server_global.log_facility }};
+{% if dhcpd_server_global.log.facility is defined and
+      dhcpd_server_global.log.facility %}
+log-facility {{ dhcpd_server_global.log.facility }};
 {% endif %}
 
-{%- if dhcpd_ddns_update_style | d() and dhcpd_ddns_update_style %}
-ddns-update-style {{ dhcpd_ddns_update_style }};
+{% if dhcpd_server_global.ddns_update_style is defined and
+      dhcpd_server_global.ddns_update_style in ["ad-hoc", "interim", "standard", "none"] %}
+{# https://kb.isc.org/docs/aa-01091 #}
+ddns-update-style {{ dhcpd_server_global.ddns_update_style }};
 {% endif %}
 
-{%- if dhcpd_allow_client_updates is defined and dhcpd_allow_client_updates %}
+{% if dhcpd_server_global.allow_client_updates is defined and
+      dhcpd_server_global.allow_client_updates %}
 allow client-updates;
 {% endif %}
 
@@ -40,8 +41,10 @@ allow client-updates;
 # subnets
 {% include('dhcpd.d/subnets.j2') %}
 
+{#
 # groups
 {% include('dhcpd.d/groups.j2') %}
 
 # hosts
 {% include('dhcpd.d/hosts.j2') %}
+#}

@@ -5,6 +5,7 @@
 {% if values.comment is defined and values.comment %}
 # {{ values.comment }}
 {% endif %}
+{% set _subnet = values | dhcp_subnet %}
 {% if (values.netmask is defined and (values.subnet + '/' + values.netmask) | ipaddr('cidr') | ipaddr('network')) %}
 subnet {{ (values.subnet + '/' + values.netmask) | ipaddr('cidr') | ipaddr('network') }} netmask {{ values.netmask }} {
 {% elif values.subnet | ipaddr('cidr') | ipaddr('network') %}

@@ -7,11 +7,7 @@ import ipaddress
 
 from ansible.utils.display import Display
 
-# https://docs.ansible.com/ansible/latest/dev_guide/developing_plugins.html
-# https://blog.oddbit.com/post/2019-04-25-writing-ansible-filter-plugins/
-
 display = Display()
-
 
 class FilterModule(object):
     """
@@ -22,6 +18,7 @@ class FilterModule(object):
         return {
             'type': self.var_type,
             'has_valid_values': self.has_values,
+            'dhcp_subnet': self.dhcp_subnet,
         }
 
     def var_type(self, var):
@@ -36,11 +33,11 @@ class FilterModule(object):
         result = False
         result_value = var
 
-        # display.v("var   : '{}' ({} / {})".format(var, type(var), self.var_type(var)))
+        # display.v(f"- var   : '{var}' ({type(var)} / {self.var_type(var)})")
 
         if isinstance(var, int) and int(var) > 0:
             result = True
-        if (isinstance(var, str) or type(var).__name__ == "AnsibleUnsafeText" or type(var).__name__ == "AnsibleUnicode"):
+        if isinstance(var, str) or type(var).__name__ == "AnsibleUnsafeText" or type(var).__name__ == "AnsibleUnicode":
             try:
                 ip = ipaddress.ip_address(var)
                 display.v(f"ip   : '{ip}'")
@@ -56,6 +53,32 @@ class FilterModule(object):
             result_value = f"{result_joined}"
             result = True
 
-        # display.v(" = {} {}".format(result, result_value))
+        # display.v(f" = {result} {result_value}")
 
         return result, result_value
+
+    def dhcp_subnet(self, data):
+        """
+      {% if (values.subnet + '/' + values.netmask) | ipaddr('cidr') | ipaddr('network') %}
+subnet {{ (values.subnet + '/' + values.netmask) | ipaddr('cidr') | ipaddr('network') }} netmask {{ values.netmask }} {
+      {% elif values.subnet | ipaddr('cidr') | ipaddr('network') %}
+subnet {{ values.subnet | ipaddr('cidr') | ipaddr('network') }} netmask {{ values.subnet | ipaddr('netmask') }} {
+      {% else %}
+subnet {{ values.subnet | ipaddr('cidr') | ipaddr('address') }} netmask 255.255.255.255 {
+      {% endif %}
+        """
+        display.v(f"- data   : '{data}' ({type(data)} / {self.var_type(data)})")
+
+        subnet = data.get("subnet", None)
+        netmask = data.get("netmask", None)
+
+
+        if isinstance(var, str) or type(var).__name__ == "AnsibleUnsafeText" or type(var).__name__ == "AnsibleUnicode":
+            try:
+                ip = ipaddress.ip_address(var)
+                display.v(f"ip   : '{ip}'")
+                result_value = f"{str(var)}"
+            except Exception:
+                result_value = f'"{str(var)}"'
+
+

@@ -4,6 +4,4 @@ dhcpd_packages: []
 
 dhcpd_service: ""
 
-dhcpd_templates: "etc/dhcp/dhcpd.conf"
-
 ...

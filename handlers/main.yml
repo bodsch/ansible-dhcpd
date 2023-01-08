@@ -2,7 +2,7 @@
 
 - name: validate config
   ansible.builtin.command: |
-    dhcpd -t -cf /etc/dhcp/dhcpd.conf
+    dhcpd -t -cf {{ dhcpd_main_config }}
 
 - name: restart dhcp server
   ansible.builtin.service:

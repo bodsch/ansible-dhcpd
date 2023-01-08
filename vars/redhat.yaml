@@ -6,9 +6,9 @@ dhcpd_dependencies:
 dhcpd_packages:
   - dhcp-server
 
-dhcpd_service: "dhcpd"
+# dhcpd_service: "dhcpd"
 
-dhcpd_templates:
-  - 'etc/dhcp/dhcpd.conf'
+# dhcpd_templates:
+  # - 'etc/dhcp/dhcpd.conf'
 
 ...

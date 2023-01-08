@@ -3,13 +3,25 @@
 dhcpd_lease_time: '24'
 
 dhcpd_defaults_server_global:
-  authoritative: false
-  # Default lease time for all IP address leases (18 hours)
-  default_lease_time: '{{ (((dhcpd_lease_time | int / 2) + 6) * 60 * 60) | round | int }}'
-  # Maximum lease time for all IP addresses (24 hours)
-  max_lease_time: '{{ (dhcpd_lease_time | int * 60 * 60) | round | int }}'
+  lease_times:
+    # Default lease time for all IP address leases (18 hours)
+    default: '{{ (((dhcpd_lease_time | int / 2) + 6) * 60 * 60) | round | int }}'
+    # Maximum lease time for all IP addresses (24 hours)
+    max: '{{ (dhcpd_lease_time | int * 60 * 60) | round | int }}'
   # Log facility to use
-  log_facility: 'local7'
+  log:
+    facility: 'local7'
+  # https://kb.isc.org/docs/aa-01091
+  #  - ad-hoc
+  #  - interim
+  #  - standard
+  #  - none
+  ddns_update_style: ""
+  #
+  allow_client_updates: false
+  #
+  update_optimization: false
+
   options:
     # https://kb.isc.org/docs/isc-dhcp-41-manual-pages-dhcp-options
     # dhcp_requested_address: ""
@@ -42,16 +54,6 @@ dhcpd_defaults_server_global:
     time-servers: []
     vendor-class-identifier: ""
 
-dhcpd_defaults_ddns:
-  # https://kb.isc.org/docs/aa-01091
-  #  - ad-hoc
-  #  - interim
-  #  - standard
-  #  - none
-  update_style: standard
-  # update-optimization off;
-  #
-
 dhcpd_defaults_subnets:
   subnet: ""
   routers: ""
@@ -59,11 +61,20 @@ dhcpd_defaults_subnets:
   pools: {}
   options: {}
 
+dhcpd_defaults_interfaces:
+  ipv4:
+    - lo
+  ipv6: []
+
 dhcpd_defaults_groups: {}
 
 dhcpd_defaults_hosts: {}
 
-dhcpd_includes: []
+# dhcpd_includes: []
+
+dhcpd_service: "dhcpd"
+
+dhcpd_main_config: /etc/dhcp/dhcpd.conf
 
 dhcpd_dependencies: []
 

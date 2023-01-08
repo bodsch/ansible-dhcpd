@@ -8,12 +8,18 @@ dhcpd_server_global:
   max_lease_time: '{{ (dhcpd_lease_time | int * 60 * 60) | round | int }}'
   # Log facility to use
   log_facility: 'local7'
+  # https://kb.isc.org/docs/aa-01091
+  #  - ad-hoc
+  #  - interim
+  #  - standard
+  #  - none
+  ddns_update_style: standard
+  #
+  allow_client_updates: false
+  #
   options:
     domain_name: "{{ ansible_domain }}"
     routers: []
-
-dhcpd_ddns:
-  update_style: standard
 
 dhcpd_subnets: {}
 

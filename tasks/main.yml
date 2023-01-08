@@ -6,13 +6,13 @@
     - dhcpd_prepare
     - dhcpd_configure
 
-- name: install
-  ansible.builtin.include_tasks: install.yaml
+#- name: install
+#  ansible.builtin.include_tasks: install.yaml
 
 - name: configure
   ansible.builtin.include_tasks: configure.yaml
 
-- name: service
-  ansible.builtin.include_tasks: service.yaml
+#- name: service
+#  ansible.builtin.include_tasks: service.yaml
 
 ...

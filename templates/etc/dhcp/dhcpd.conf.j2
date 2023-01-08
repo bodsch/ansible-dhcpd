@@ -41,10 +41,8 @@ allow client-updates;
 # subnets
 {% include('dhcpd.d/subnets.j2') %}
 
-{#
 # groups
 {% include('dhcpd.d/groups.j2') %}
 
 # hosts
 {% include('dhcpd.d/hosts.j2') %}
-#}

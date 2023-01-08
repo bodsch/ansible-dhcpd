@@ -9,6 +9,7 @@ from ansible.utils.display import Display
 
 display = Display()
 
+
 class FilterModule(object):
     """
         Ansible file jinja2 tests
@@ -59,26 +60,28 @@ class FilterModule(object):
 
     def dhcp_subnet(self, data):
         """
-      {% if (values.subnet + '/' + values.netmask) | ipaddr('cidr') | ipaddr('network') %}
-subnet {{ (values.subnet + '/' + values.netmask) | ipaddr('cidr') | ipaddr('network') }} netmask {{ values.netmask }} {
-      {% elif values.subnet | ipaddr('cidr') | ipaddr('network') %}
-subnet {{ values.subnet | ipaddr('cidr') | ipaddr('network') }} netmask {{ values.subnet | ipaddr('netmask') }} {
-      {% else %}
-subnet {{ values.subnet | ipaddr('cidr') | ipaddr('address') }} netmask 255.255.255.255 {
-      {% endif %}
         """
-        display.v(f"- data   : '{data}' ({type(data)} / {self.var_type(data)})")
+        display.v(f"dhcp_subnet({data})")
 
-        subnet = data.get("subnet", None)
-        netmask = data.get("netmask", None)
+        cidr = None
+        netmask = None
 
+        if len(data) == 0:
+            return cidr, netmask
 
-        if isinstance(var, str) or type(var).__name__ == "AnsibleUnsafeText" or type(var).__name__ == "AnsibleUnicode":
-            try:
-                ip = ipaddress.ip_address(var)
-                display.v(f"ip   : '{ip}'")
-                result_value = f"{str(var)}"
-            except Exception:
-                result_value = f'"{str(var)}"'
+        from ipaddress import IPv4Interface
 
+        try:
+            ipc = IPv4Interface(data)
 
+            cidr = ipc.ip
+            netmask = ipc.netmask
+            # display.v(f"ip   : '{ipc}'")
+            # display.v(f"     : '{ipc.ip}'")
+            # display.v(f"     : '{ipc.netmask}'")
+
+        except Exception as e:
+            display.v(f"ERROR: '{e}'")
+            pass
+
+        return cidr, netmask

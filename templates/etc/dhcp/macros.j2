@@ -24,8 +24,8 @@
       {%- set key = "option " + key %}
     {% endif %}
 {{ key }} {{ v }};
-  {%- endif %}
-{%- endfor -%}
+  {% endif %}
+{% endfor -%}
 {% endmacro %}
 
 {#

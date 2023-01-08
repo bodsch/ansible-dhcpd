@@ -7,5 +7,5 @@
 
 {% if dhcpd_server_global.options is defined and
       dhcpd_server_global.options | count > 0 %}
-  {{ tpl.print_options(dhcpd_server_global.options) | indent(2, first=False) }}
+{{ tpl.print_options(dhcpd_server_global.options) | indent(0, first=False) }}
 {% endif %}

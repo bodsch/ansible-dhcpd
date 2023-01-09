@@ -6,4 +6,8 @@ dhcpd_dependencies:
 dhcpd_packages:
   - dhcp
 
+dhcpd_main_config: /etc/dhcpd.conf
+
+dhcpd_service: dhcpd4
+
 ...

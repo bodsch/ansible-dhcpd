@@ -59,6 +59,9 @@
   when:
     - dhcpd_dependencies | default([]) | count > 0
 
+- name: get latest system information
+  ansible.builtin.setup:
+
 - name: merge dhcpd server configuration between defaults and custom
   ansible.builtin.set_fact:
     dhcpd_server_global: "{{ dhcpd_defaults_server_global | combine(dhcpd_server_global, recursive=True) }}"
@@ -66,12 +69,5 @@
     dhcpd_subnets: "{{ dhcpd_defaults_subnets | combine(dhcpd_subnets, recursive=True) }}"
     dhcpd_groups: "{{ dhcpd_defaults_groups | combine(dhcpd_groups, recursive=True) }}"
     dhcpd_hosts: "{{ dhcpd_defaults_hosts | combine(dhcpd_hosts, recursive=True) }}"
-
-- name: update package cache
-  ansible.builtin.package:
-    update_cache: true
-
-- name: get latest system information
-  ansible.builtin.setup:
 
 ...

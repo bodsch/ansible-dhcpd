@@ -63,7 +63,7 @@ dhcpd_defaults_subnets:
 
 dhcpd_defaults_interfaces:
   ipv4:
-    - lo
+    - eth0
   ipv6: []
 
 dhcpd_defaults_groups: {}

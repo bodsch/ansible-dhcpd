@@ -1,40 +1,17 @@
 ---
 
-- name: archlinux based
+- name: create default configuration for DHCP server (openrc)
+  ansible.builtin.template:
+    src: etc/conf.d/dhcpd.j2
+    dest: /etc/conf.d/dhcpd
+    owner: root
+    group: root
+    mode: 0644
+    backup: true
+  notify:
+    - restart dhcp server
   when:
-    - ansible_distribution | lower == 'archlinux' or
-      ansible_os_family | lower == 'artix linux'
-  block:
-
-    - name: get latest system information
-      ansible.builtin.setup:
-
-    - name: create default configuration for DHCP server (systemd)
-      ansible.builtin.template:
-        src: etc/conf.d/dhcpd.j2
-        dest: /etc/dhcpd.conf
-        owner: root
-        group: root
-        mode: 0644
-        backup: true
-        validate: dhcpd -t -cf %s
-      notify:
-        - restart dhcp server
-      when:
-        - ansible_service_mgr | lower == "systemd"
-
-    - name: create default configuration for DHCP server (openrc)
-      ansible.builtin.template:
-        src: etc/conf.d/dhcpd.j2
-        dest: /etc/conf.d/dhcpd
-        owner: root
-        group: root
-        mode: 0644
-        backup: true
-      notify:
-        - restart dhcp server
-      when:
-        - ansible_service_mgr | lower == "openrc"
+    - ansible_service_mgr | lower == "openrc"
 
 - name: create DHCP server default
   ansible.builtin.template:
@@ -49,6 +26,17 @@
   when:
     - ansible_os_family | lower == "debian"
 
+- name: create config directory
+  become: true
+  ansible.builtin.file:
+    state: directory
+    path: "{{ dhcpd_main_config | dirname }}"
+    owner: root
+    group: root
+    mode: 0755
+  when:
+    - dhcpd_main_config | dirname != "/etc"
+
 - name: configure DHCP server
   become: true
   ansible.builtin.template:
@@ -58,9 +46,6 @@
     group: root
     mode: 0644
     backup: true
-    # validate: dhcpd -t -cf %s
-  #loop:
-  #  "{{ dhcpd_templates }}"
   notify:
     - validate config
     - restart dhcp server

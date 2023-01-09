@@ -5,6 +5,7 @@ dhcpd_dependencies:
 
 dhcpd_packages:
   - isc-dhcp-server
+  - isc-dhcp-common
 
 dhcpd_service: "isc-dhcp-server"
 

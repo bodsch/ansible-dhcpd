@@ -7,4 +7,6 @@ dhcpd_packages:
   - dhcp
   - dhcp-openrc
 
+dhcpd_main_config: /etc/dhcpd.conf
+
 ...

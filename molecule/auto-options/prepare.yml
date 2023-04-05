@@ -1,9 +1,14 @@
 ---
-- name: prepare container
+
+- name: information
   hosts: all
   gather_facts: true
 
   pre_tasks:
+    - name: update package cache
+      package:
+        update_cache: true
+
     - name: arch- / artixlinux
       block:
         - name: update pacman system

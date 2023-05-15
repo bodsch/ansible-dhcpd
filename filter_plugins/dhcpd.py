@@ -17,16 +17,9 @@ class FilterModule(object):
 
     def filters(self):
         return {
-            'type': self.var_type,
             'has_valid_values': self.has_values,
             'dhcp_subnet': self.dhcp_subnet,
         }
-
-    def var_type(self, var):
-        '''
-          Get the type of a variable
-        '''
-        return type(var).__name__
 
     def has_values(self, var):
         """

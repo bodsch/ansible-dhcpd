@@ -7,7 +7,7 @@
 {% set print = self %}
 
 {% macro print_options(options) %}
-{% set with_option = [
+  {% set with_option = [
           "host-name",
           "domain-name-servers",
           "domain-search",
@@ -16,16 +16,16 @@
           "subnet-mask",
           "routers"
         ] %}
-{% for key, value in options.items() %}
-  {%- set valid, v = value | has_valid_values %}
-  {% if valid %}
-    {%- set key = key.replace('_','-') %}
-    {% if key in with_option %}
-      {%- set key = "option " + key %}
-    {% endif %}
+  {% for key, value in options.items() %}
+    {% set valid, v = value | has_valid_values %}
+    {% if valid %}
+      {% set key = key.replace('_','-') %}
+      {% if key in with_option %}
+        {% set key = "option " + key %}
+      {% endif %}
 {{ key }} {{ v }};
-  {% endif %}
-{% endfor -%}
+    {% endif %}
+  {% endfor %}
 {% endmacro %}
 
 {#
@@ -33,54 +33,53 @@
 #   ---- Macro: print_subnet() ----
 #}
 {% macro print_subnet(subnets, hosts) %}
-{%- set subnets_values = {} %}
+  {% set subnets_values = {} %}
 # => {{ subnets }}
 
-{%- if subnets.comment is defined and subnets.comment %}
+  {% if subnets.comment is defined and subnets.comment | string | length > 0 %}
 # {{ subnets.comment }}
-{%- endif %}
-
-{%- set subnets_values = subnets.values() %}
-
+  {% endif %}
+  {% set subnets_values = subnets.values() %}
 # => {{ subnets_values }}
 
-{% for subnet in subnets_values %}
-{%- if subnet.comment is defined and subnet.comment %}
+  {% for subnet in subnets_values %}
+    {% if subnet.comment is defined and subnet.comment | string | length > 0 %}
 # {{ subnet.comment }}
-{% endif %}
-{% if (subnet.netmask is defined and (subnet.subnet + '/' + subnet.netmask) | ipaddr('cidr') | ipaddr('network')) %}
-subnet {{ (subnet.subnet + '/' + subnet.netmask) | ipaddr('cidr') | ipaddr('network') }} netmask {{ subnet.netmask }} {
-{% elif subnet.subnet | ipaddr('cidr') | ipaddr('network') %}
-subnet {{ subnet.subnet | ipaddr('cidr') | ipaddr('network') }} netmask {{ subnet.subnet | ipaddr('netmask') }} {
-{% else %}
-subnet {{ subnet.subnet | ipaddr('cidr') | ipaddr('address') }} netmask 255.255.255.255 {
-{% endif %}
-{% if (subnet.range is defined and subnet.range) %}
+    {% endif %}
+    {% if (subnet.netmask is defined and
+          (subnet.subnet + '/' + subnet.netmask) | ansible.utils.ipaddr('cidr') | ansible.utils.ipaddr('network')) %}
+subnet {{ (subnet.subnet + '/' + subnet.netmask) | ansible.utils.ipaddr('cidr') | ansible.utils.ipaddr('network') }} netmask {{ subnet.netmask }} {
+    {% elif subnet.subnet | ansible.utils.ipaddr('cidr') | ansible.utils.ipaddr('network') %}
+subnet {{ subnet.subnet | ansible.utils.ipaddr('cidr') | ansible.utils.ipaddr('network') }} netmask {{ subnet.subnet | ansible.utils.ipaddr('netmask') }} {
+    {% else %}
+subnet {{ subnet.subnet | ansible.utils.ipaddr('cidr') | ansible.utils.ipaddr('address') }} netmask 255.255.255.255 {
+    {% endif %}
+    {% if subnet.range is defined and subnet.range | string | length > 0 %}
   range {{ subnet.range }};
-{% endif %}
-{%- if subnet.routers is defined and subnet.routers %}
+    {% endif %}
+    {% if subnet.routers is defined and subnet.routers | count > 0 %}
   option routers {{ subnet.routers | join(', ') }};
-{%- endif %}
-{%- if subnet.options is defined and subnet.options %}
+    {% endif %}
+    {% if subnet.options is defined and subnet.options | count > 0 %}
 {{ subnet.options | indent(2, first=False) }}
-{%- endif %}
-{% if subnet.pools is defined and subnet.pools %}
-{% for pool in subnet.pools %}
+    {% endif %}
+    {% if subnet.pools is defined and subnet.pools | count > 0 %}
+      {% for pool in subnet.pools %}
   pool {
-{% if pool.comment is defined and pool.comment %}
+        {% if pool.comment is defined and pool.comment | string | length > 0 %}
     # {{ pool.comment }}
-{% endif %}
+        {% endif %}
     range {{ pool.range }};
   }
 {# hosts #}
-{% if hosts is defined and hosts | count > 0 %}
+        {% if hosts is defined and hosts | count > 0 %}
 # {{ hosts }}
 {{ print_hosts(hosts) | indent(2, first=False) }}
-{% endif %}
-{% endfor %}
-{% endif %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
 }
-{% endfor %}
+  {% endfor %}
 {% endmacro %}
 
 {# -------------------------------------------------------#}
@@ -90,22 +89,22 @@ subnet {{ subnet.subnet | ipaddr('cidr') | ipaddr('address') }} netmask 255.255.
 #   ---- Macro: print_hosts() ----
 #}
 {% macro print_hosts(hosts) %}
-{% for name, values in hosts.items() %}
-{%- if values.comment is defined and values.comment %}
+  {% for name, values in hosts.items() %}
+    {% if values.comment is defined and values.comment | string | length > 0 %}
 # {{ values.comment }}
-{% endif %}
+    {% endif %}
 host {{ name }} {
-{% if values.mac is defined and values.mac %}
+    {% if values.mac is defined and values.mac %}
   hardware ethernet {{ values.mac }};
-{% endif %}
-{% if values.address is defined and values.address %}
+    {% endif %}
+    {% if values.address is defined and values.address %}
   fixed-address {{ values.address }};
-{% endif %}
-{% if values.options is defined and values.options | count > 0 %}
+    {% endif %}
+    {% if values.options is defined and values.options | count > 0 %}
   {{ print_options(values.options) | indent(2, first=False) }}
-{% endif -%}
+    {% endif %}
 }
-{% endfor %}
+  {% endfor %}
 {% endmacro %}
 
 {#
@@ -113,9 +112,9 @@ host {{ name }} {
 #   ---- Macro: print_key() ----
 #}
 {% macro print_key(key) %}
-{% if key.comment is defined and key.comment %}
+  {% if key.comment is defined and key.comment | string | length > 0 %}
 # {{ key.comment }}
-{% endif %}
+  {% endif %}
 key {{ key.key }} {
   algorithm {{ key.algorithm|default('hmac-md5') }};
   secret {{ key.secret }};
@@ -126,9 +125,9 @@ key {{ key.key }} {
 #   ---- Macro: print_zone() ----
 #}
 {% macro print_zone(zone) %}
-{% if zone.comment is defined and zone.comment %}
+  {% if zone.comment is defined and zone.comment | string | length > 0 %}
 # {{ zone.comment }}
-{% endif %}
+  {% endif %}
 zone {{ zone.zone }} {
   primary {{ zone.primary }};
   key {{ zone.key }};

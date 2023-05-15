@@ -31,7 +31,7 @@
         state: present
       register: _installed
 
-    - name: update apt cache
+    - name: update apt cache  # noqa no-handler
       when:
         - _installed.changed
       block:
@@ -48,9 +48,9 @@
             clean: true
           when: "ansible_version.full is version_compare('2.13', '>=')"
 
-- name: update package cache
-  ansible.builtin.package:
-    update_cache: true
+        - name: update package cache
+          ansible.builtin.package:
+            update_cache: true
 
 - name: install requirements
   ansible.builtin.package:

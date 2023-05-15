@@ -3,6 +3,9 @@
 - name: validate config
   ansible.builtin.command: |
     dhcpd -t -cf {{ dhcpd_main_config }}
+  register: dhcpd_validate
+  changed_when: dhcpd_validate.rc != 0
+  failed_when: dhcpd_validate.rc != 0
 
 - name: restart dhcp server
   ansible.builtin.service:

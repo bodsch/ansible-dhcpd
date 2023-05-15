@@ -1,3 +1,4 @@
+#jinja2: trim_blocks: True, lstrip_blocks: True
 # {{ ansible_managed }}
 
 # Path to dhcpd's config file (default: /etc/dhcp/dhcpd.conf).
@@ -16,11 +17,14 @@ OPTIONS="{{ dhcpd_server_options | default('-4') }}"
 
 # On what interfaces should the DHCP server (dhcpd) serve DHCP requests?
 #	Separate multiple interfaces with spaces, e.g. "eth0 eth1".
-{% if dhcpd_interfaces is defined and dhcpd_interfaces %}
-{% if dhcpd_interfaces.ipv4 is defined and dhcpd_interfaces.ipv4 | length > 0 %}
+{% if dhcpd_interfaces is defined and
+      dhcpd_interfaces | count > 0 %}
+  {% if dhcpd_interfaces.ipv4 is defined and
+        dhcpd_interfaces.ipv4 | string | length > 0 %}
 INTERFACESv4="{{ dhcpd_interfaces.ipv4 | join(' ') }}"
-{% endif %}
-{% if dhcpd_interfaces.ipv6 is defined and dhcpd_interfaces.ipv6 | length > 0 %}
+  {% endif %}
+  {% if dhcpd_interfaces.ipv6 is defined and
+        dhcpd_interfaces.ipv6 | string | length > 0 %}
 INTERFACESv6="{{ dhcpd_interfaces.ipv6 | join(' ') }}"
-{% endif %}
+  {% endif %}
 {% endif %}

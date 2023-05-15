@@ -50,4 +50,7 @@
     - validate config
     - restart dhcp server
 
+- name: flush handlers
+  meta: flush_handlers
+
 ...

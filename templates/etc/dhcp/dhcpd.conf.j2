@@ -10,17 +10,17 @@ not authoritative;
 {% endif %}
 
 {% if dhcpd_server_global.lease_times.default is defined and
-      dhcpd_server_global.lease_times.default %}
+      dhcpd_server_global.lease_times.default | string | length > 0 %}
 default-lease-time {{ dhcpd_server_global.lease_times.default }};
 {% endif %}
 
 {% if dhcpd_server_global.lease_times.max is defined and
-      dhcpd_server_global.lease_times.max %}
+      dhcpd_server_global.lease_times.max | string | length > 0 %}
 max-lease-time {{ dhcpd_server_global.lease_times.max }};
 {% endif %}
 
 {% if dhcpd_server_global.log.facility is defined and
-      dhcpd_server_global.log.facility %}
+      dhcpd_server_global.log.facility | string | length > 0 %}
 log-facility {{ dhcpd_server_global.log.facility }};
 {% endif %}
 
@@ -31,7 +31,7 @@ ddns-update-style {{ dhcpd_server_global.ddns_update_style }};
 {% endif %}
 
 {% if dhcpd_server_global.allow_client_updates is defined and
-      dhcpd_server_global.allow_client_updates %}
+      dhcpd_server_global.allow_client_updates | string | length > 0 %}
 allow client-updates;
 {% endif %}
 

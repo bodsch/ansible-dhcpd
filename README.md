@@ -15,16 +15,30 @@ Installs and configure a dhcp server on varoius linux systems.
 [quality]: https://galaxy.ansible.com/bodsch/dhcpd
 
 
+## Requirements & Dependencies
+
+Ansible Collections
+
+- [bodsch.core](https://github.com/bodsch/ansible-collection-core)
+
+```bash
+ansible-galaxy collection install bodsch.core
+```
+or
+```bash
+ansible-galaxy collection install --requirements-file collections.yml
+```
+
+
 ## tested operating systems
 
 * ArchLinux
 * Debian based
-    - Debian 10 / 11
-    - Ubuntu 20.04
-* RedHat based
-    - Alma Linux 8
-    - Rocky Linux 8
-    - OracleLinux 8
+    - Debian 10 / 11 / 12
+    - Ubuntu 20.04 / 22.04
+
+> **RedHat-based systems are no longer officially supported! May work, but does not have to.**
+
 
 ## usage
 
